@@ -33,8 +33,7 @@ export const getItemBySearch = async(req, res) =>
     const {searchQuery} = req.query;
 
     try{
-        const name = new RegExp(searchQuery, 'i');
-        const item = await ItemModel.findOne({name: name});
+        const item = await ItemModel.find({name: {$regex: `^${searchQuery}`, $options: 'i'}});
         res.status(200).json({data: item});
     }catch(error){
         res.status(500).json({message:error.message});
